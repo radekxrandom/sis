@@ -26,7 +26,7 @@ export default function CustomizedSteppers(props) {
   const steps = getSteps();
 
   return (
-    <div className={classes.root}>
+    <div className="steps">
       <Stepper alternativeLabel activeStep={props.activeStep}>
         {steps.map((label, index) => (
           <Step onClick={() => props.navigateAuth(index)} key={label}>

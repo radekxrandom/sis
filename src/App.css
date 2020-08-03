@@ -68,8 +68,12 @@
   background: #fafafa !important;
 }
 
-.makeStyles-root-9 {
-  width: 70rem !important;
+.MuiStepper-root {
+  padding: 24px 20rem !important;
+}
+
+.steps {
+  width: 100% !important;
   margin: auto;
 }
 
@@ -266,12 +270,29 @@
 }
 
 @media screen and (max-device-width: 1250px) {
-  .locateSibling+div {
-    width: 100% !important;
-  }
-
   .MuiContainer-root {
     margin-top: 2rem;
+  }
+
+  .article {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+
+  .MuiStepper-root {
+    padding: 24px 0rem !important;
+  }
+}
+
+@media screen and (max-device-width: 900px) {
+  .article {
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+  }
+
+  .formFieldLeft, .formFieldRight {
+    width: 100% !important;
+    margin: 0 auto 0.5rem !important;
   }
 }
 
