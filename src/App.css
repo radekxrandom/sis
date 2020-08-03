@@ -39,7 +39,7 @@
 }
 
 .MuiContainer-root {
-  margin-top: 9rem;
+  margin-top: 7rem;
 }
 
 .MuiLink-underlineHover:hover {
@@ -251,6 +251,7 @@
 
 #root {
   overflow: hidden;
+  height: 100vh !important;
 }
 
 .locateSibling+div {

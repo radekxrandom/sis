@@ -20,7 +20,8 @@ const checker = (state, fieldNames) => {
   return err.includes(true);
 };
 
-const Register = React.memo(props => {
+const Register = props => {
+  const [shake, setShake] = React.useState("");
   const handleSubmit = async e => {
     e.preventDefault();
     if (checker(props.state, fieldNames)) {
@@ -33,14 +34,20 @@ const Register = React.memo(props => {
       password: regPassword,
       email
     };
-    const post = await props.submit("post", "api/v1/registration/user", form);
-    props.openAlert("Rejestracja pomyślna", "success");
-    props.displayOtherForm("login", "register");
-    props.setActiveStep(2);
+    try {
+      const post = await props.submit("post", "api/v1/registration/user", form);
+      props.openAlert("Rejestracja pomyślna", "success");
+      props.displayOtherForm("login", "register");
+      props.setActiveStep(2);
+    } catch (err) {
+      props.openAlert("Problem", "info");
+      setShake("shake-horizontal");
+      setTimeout(() => setShake(""), 300);
+    }
   };
   return (
     <>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className={`${shake}`}>
         <CssBaseline />
         <div className="flexColumnCenter">
           <Avatar>
@@ -49,19 +56,17 @@ const Register = React.memo(props => {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <form data-submit="register" onSubmit={handleSubmit} noValidate>
+          <form data-submit="register" onSubmit={handleSubmit}>
             <TextInput
               handleInput={props.handleInput}
               name="login"
               label="Login"
-              validate={props.validate}
               err={props.state.err.login}
             />
             <TextInput
               handleInput={props.handleInput}
               name="email"
               label="Email"
-              validate={props.validate}
               err={props.state.err.email}
             />
             <TextInput
@@ -69,7 +74,6 @@ const Register = React.memo(props => {
               name="regPassword"
               label="Hasło"
               type="password"
-              validate={props.validate}
               err={props.state.err.regPassword}
             />
             <TextInput
@@ -77,7 +81,6 @@ const Register = React.memo(props => {
               name="confirmPassword"
               label="Powtórz hasło"
               type="password"
-              validate={props.validate}
               err={props.state.err.confirmPassword}
             />
             <FormControlLabel
@@ -110,6 +113,6 @@ const Register = React.memo(props => {
       </Container>
     </>
   );
-});
+};
 
 export default Register;

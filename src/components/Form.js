@@ -17,12 +17,17 @@ const Form = props => {
       gender,
       description
     };
-    const pach = await props.submit(
-      "put",
-      "api/v1/user/basicinfo?lang=pl",
-      form
-    );
-    console.log(pach);
+    try {
+      const pach = await props.submit(
+        "put",
+        "api/v1/user/basicinfo?lang=pl",
+        form
+      );
+      console.log(pach);
+      props.openAlert("Pomyślnie zaktualizowano dane", "success");
+    } catch (err) {
+      props.openAlert("Problem", "info");
+    }
   };
 
   return (

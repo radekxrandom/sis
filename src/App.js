@@ -23,13 +23,13 @@ const App = () => {
     msg: "",
     type: ""
   });
-  const openAlert = (msg, type) => {
+  const openAlert = React.useCallback((msg, type) => {
     setAlert({
       open: true,
       msg,
       type
     });
-  };
+  }, []);
 
   const closeAlert = () => {
     setAlert({

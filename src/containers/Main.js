@@ -18,7 +18,7 @@ const Main = props => {
   return (
     <>
       <AuthNavbar />
-      <WrapForm userData={data} />
+      <WrapForm userData={data} openAlert={props.openAlert} />
     </>
   );
 };

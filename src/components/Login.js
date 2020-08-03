@@ -38,12 +38,18 @@ const Login = props => {
       login,
       password
     };
-    const post = await props.submit("post", "api/v1/auth/login", form);
-    //keep jwt token if user checked remember me box
-    saveLogin && localStorage.setItem("authToken", post.data.accessToken);
-    props.openAlert("Zalogowano", "success");
-    setToken(post.data.accessToken);
-    setAuth("main");
+    try {
+      const post = await props.submit("post", "api/v1/auth/login", form);
+      //keep jwt token if user checked remember me box
+      saveLogin && localStorage.setItem("authToken", post.data.accessToken);
+      props.openAlert("Zalogowano", "success");
+      setToken(post.data.accessToken);
+      setAuth("main");
+    } catch (err) {
+      props.openAlert("Problem", "info");
+      setShake("shake-horizontal");
+      setTimeout(() => setShake(""), 300);
+    }
   };
   return (
     <>
@@ -61,14 +67,12 @@ const Login = props => {
               handleInput={props.handleInput}
               name="login"
               label="Login"
-              validate={props.validate}
               err={props.state.err.login}
             />
             <TextInput
               handleInput={props.handleInput}
               name="password"
               label="Hasło"
-              validate={props.validate}
               type="password"
               err={props.state.err.password}
             />
