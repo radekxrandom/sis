@@ -5,11 +5,29 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import { mainAxios } from "../axios/config";
 
 const Form = props => {
+  const [state, setState] = React.useState({
+    name: "",
+    surname: "",
+    birthDate: "",
+    gender: "",
+    description: "",
+    err: {}
+  });
+  const handleInput = e => {
+    const { name } = e.target;
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    setState({
+      ...state,
+      [name]: value
+    });
+  };
   const handleSubmit = async e => {
     e.preventDefault();
-    const { name, surname, birthDate, gender, description } = props.state;
+    const { name, surname, birthDate, gender, description } = state;
     const form = {
       name,
       surname,
@@ -18,12 +36,8 @@ const Form = props => {
       description
     };
     try {
-      const pach = await props.submit(
-        "put",
-        "api/v1/user/basicinfo?lang=pl",
-        form
-      );
-      console.log(pach);
+      const post = await mainAxios.put("api/v1/user/basicinfo?lang=pl", form);
+      console.log(post);
       props.openAlert("Pomyślnie zaktualizowano dane", "success");
     } catch (err) {
       props.openAlert("Problem", "info");
@@ -49,9 +63,8 @@ const Form = props => {
                 id="name"
                 label="Imie"
                 name="name"
-                onChange={props.handleInputWithoutValidation}
-                autoComplete="name"
-                autoFocus
+                inputProps={{ "aria-label": "Imie" }}
+                onChange={handleInput}
               />
               <TextField
                 className="formFieldRight"
@@ -62,17 +75,18 @@ const Form = props => {
                 id="surname"
                 label="Nazwisko"
                 name="surname"
-                onChange={props.handleInputWithoutValidation}
-                autoComplete="surname"
-                autoFocus
+                inputProps={{ "aria-label": "Nazwisko" }}
+                onChange={handleInput}
               />
               <TextField
                 className="formFieldLeft"
                 id="birthDate"
-                label="Wiek"
+                label="Data urodzenia"
                 type="date"
                 name="birthDate"
-                onChange={props.handleInputWithoutValidation}
+                inputProps={{ "aria-label": "Data urodzenia" }}
+                required
+                onChange={handleInput}
                 variant="outlined"
                 defaultValue="2017-05-24"
                 InputLabelProps={{
@@ -84,14 +98,11 @@ const Form = props => {
                 variant="outlined"
                 className="formFieldRight formcont"
               >
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Plec
-                </InputLabel>
+                <InputLabel id="Płeć">Plec</InputLabel>
                 <Select
-                  labelId="demo-simple-select-outlined-label"
+                  labelId="Płeć"
                   id="demo-simple-select-outlined"
-                  value={props.state.gender}
-                  onChange={props.handleInputWithoutValidation}
+                  onChange={handleInput}
                   label="Plec"
                   name="gender"
                 >
@@ -106,8 +117,9 @@ const Form = props => {
                 multiline
                 rows="7"
                 fullWidth
+                required
                 variant="outlined"
-                onChange={props.handleInputWithoutValidation}
+                onChange={handleInput}
               />
 
               <Button

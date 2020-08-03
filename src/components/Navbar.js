@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AuthNavbar = props => {
+const Navbar = props => {
   const classes = useStyles();
   const [auth, setAuth] = useContext(AppContext);
   const logout = () => {
@@ -34,17 +34,8 @@ const AuthNavbar = props => {
     <>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            <Link
-              style={{
-                textDecoration: "none",
-                color: "white",
-                fontFamily: "Raleway"
-              }}
-              to="/"
-            >
-              The greatest website
-            </Link>
+          <Typography variant="h6" className={`navbar ${classes.title}`}>
+            The greatest website
           </Typography>
           <Button
             className="bts"
@@ -60,4 +51,4 @@ const AuthNavbar = props => {
   );
 };
 
-export default AuthNavbar;
+export default Navbar;

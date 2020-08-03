@@ -11,6 +11,7 @@ const TextInput = ({ handleInput, name, label, clNaem, type, err }) => {
       fullWidth
       id={name}
       label={label}
+      inputProps={{ "aria-label": label }}
       name={name}
       onChange={handleInput}
       autoComplete={name}

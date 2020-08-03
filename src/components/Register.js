@@ -10,6 +10,8 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import TextInput from "../blocks/TextInput";
+import { mainAxios } from "../axios/config";
+import { useFormFields } from "../formHook";
 
 const fieldNames = ["login", "email", "regPassword", "confirmPassword"];
 
@@ -22,20 +24,27 @@ const checker = (state, fieldNames) => {
 
 const Register = props => {
   const [shake, setShake] = React.useState("");
+  const [state, handleInput] = useFormFields({
+    login: "",
+    email: "",
+    regPassword: "",
+    confirmPassword: "",
+    err: {}
+  });
   const handleSubmit = async e => {
     e.preventDefault();
-    if (checker(props.state, fieldNames)) {
+    if (checker(state, fieldNames)) {
       props.openAlert("Popraw błędy", "info");
       return false;
     }
-    const { login, regPassword, email } = props.state;
+    const { login, regPassword, email } = state;
     const form = {
       login,
       password: regPassword,
       email
     };
     try {
-      const post = await props.submit("post", "api/v1/registration/user", form);
+      const post = await mainAxios.post("api/v1/registration/user", form);
       props.openAlert("Rejestracja pomyślna", "success");
       props.displayOtherForm("login", "register");
       props.setActiveStep(2);
@@ -58,30 +67,30 @@ const Register = props => {
           </Typography>
           <form data-submit="register" onSubmit={handleSubmit}>
             <TextInput
-              handleInput={props.handleInput}
+              handleInput={handleInput}
               name="login"
               label="Login"
-              err={props.state.err.login}
+              err={state.err.login}
             />
             <TextInput
-              handleInput={props.handleInput}
+              handleInput={handleInput}
               name="email"
               label="Email"
-              err={props.state.err.email}
+              err={state.err.email}
             />
             <TextInput
-              handleInput={props.handleInput}
+              handleInput={handleInput}
               name="regPassword"
               label="Hasło"
               type="password"
-              err={props.state.err.regPassword}
+              err={state.err.regPassword}
             />
             <TextInput
-              handleInput={props.handleInput}
+              handleInput={handleInput}
               name="confirmPassword"
               label="Powtórz hasło"
               type="password"
-              err={props.state.err.confirmPassword}
+              err={state.err.confirmPassword}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -90,7 +99,7 @@ const Register = props => {
             <Button
               type="submit"
               fullWidth
-              disabled={checker(props.state, fieldNames)}
+              disabled={checker(state, fieldNames)}
               variant="contained"
               color="primary"
               className="submitBtn"

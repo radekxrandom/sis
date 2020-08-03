@@ -11,11 +11,13 @@ import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import AppContext from "../AppContext";
 import TextInput from "../blocks/TextInput";
+import { useFormFields } from "../formHook";
 import { setToken } from "../axios/config";
+import { mainAxios } from "../axios/config";
 
 const fieldNames = ["login", "password"];
 
-const checker = (state, fieldNames) => {
+const containsErrors = (state, fieldNames) => {
   const err = fieldNames.map(el =>
     !state[el] || state.err[el] ? true : false
   );
@@ -24,22 +26,28 @@ const checker = (state, fieldNames) => {
 
 const Login = props => {
   const [auth, setAuth] = useContext(AppContext);
-  const [shake, setShake] = useState("");
+  const [animation, setAnimation] = useState("");
+  const [state, handleInput] = useFormFields({
+    login: "",
+    password: "",
+    saveLogin: "",
+    err: {}
+  });
   const handleSubmit = async e => {
     e.preventDefault();
-    if (checker(props.state, fieldNames)) {
+    if (containsErrors(state, fieldNames)) {
       props.openAlert("Popraw błędy", "info");
-      setShake("shake-horizontal");
-      setTimeout(() => setShake(""), 300);
+      setAnimation("shake-horizontal");
+      setTimeout(() => setAnimation(""), 300);
       return false;
     }
-    const { login, password, saveLogin } = props.state;
+    const { login, password, saveLogin } = state;
     const form = {
       login,
       password
     };
     try {
-      const post = await props.submit("post", "api/v1/auth/login", form);
+      const post = await mainAxios.post("api/v1/auth/login", form);
       //keep jwt token if user checked remember me box
       saveLogin && localStorage.setItem("authToken", post.data.accessToken);
       props.openAlert("Zalogowano", "success");
@@ -47,13 +55,13 @@ const Login = props => {
       setAuth("main");
     } catch (err) {
       props.openAlert("Problem", "info");
-      setShake("shake-horizontal");
-      setTimeout(() => setShake(""), 300);
+      setAnimation("shake-horizontal");
+      setTimeout(() => setAnimation(""), 300);
     }
   };
   return (
     <>
-      <Container component="main" maxWidth="xs" className={`${shake}`}>
+      <Container component="main" maxWidth="xs" className={animation}>
         <CssBaseline />
         <div className="flexColumnCenter">
           <Avatar>
@@ -64,24 +72,24 @@ const Login = props => {
           </Typography>
           <form onSubmit={handleSubmit} data-submit="login">
             <TextInput
-              handleInput={props.handleInput}
+              handleInput={handleInput}
               name="login"
               label="Login"
-              err={props.state.err.login}
+              err={state.err.login}
             />
             <TextInput
-              handleInput={props.handleInput}
+              handleInput={handleInput}
               name="password"
               label="Hasło"
               type="password"
-              err={props.state.err.password}
+              err={state.err.password}
             />
 
             <FormControlLabel
               control={
                 <Checkbox
                   name="saveLogin"
-                  onChange={props.handleInputWithoutValidation}
+                  onChange={handleInput}
                   value="saveLogin"
                   color="primary"
                 />
@@ -91,7 +99,7 @@ const Login = props => {
             <Button
               type="submit"
               fullWidth
-              disabled={checker(props.state, fieldNames)}
+              disabled={containsErrors(state, fieldNames)}
               className={`submitBtn`}
               variant="contained"
               color="primary"
@@ -105,7 +113,7 @@ const Login = props => {
                   data-location="register"
                   onClick={props.changeShown}
                 >
-                  Don't have an account? Register here.
+                  Nie masz jeszcze konta? Zarejestruj się.
                 </Link>
               </Grid>
             </Grid>

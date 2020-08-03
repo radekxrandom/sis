@@ -70,6 +70,9 @@ class Validator {
   confirmPassword() {
     return this._arePwdsEqual();
   }
+  saveLogin() {
+    return this.errors;
+  }
 }
 
 export default Validator;

@@ -1,22 +1,17 @@
-import React, { useState, useCallback, Suspense } from "react";
-import Login from "../components/Login";
-//import Register from "../components/Register";
+import React, { useState, Suspense } from "react";
+//import Login from "../components/Login";
+import Register from "../components/Register";
 import Steps from "../components/Steps";
-import withInput from "../withInput";
 import Skeleton from "@material-ui/lab/Skeleton";
 
-const Register = React.lazy(() => import("../components/Register"));
-//const Login = React.lazy(() => import("../components/Login"));
+const Login = React.lazy(() => import("../components/Login"));
 
 const sleep = waitTimeInMs =>
   new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
-const WrapLogin = withInput(Login);
-const WrapRegister = withInput(Register);
-
 const AuthContainer = React.memo(props => {
-  const [shown, setShown] = useState("login");
-  const [activeStep, setActiveStep] = useState(2);
+  const [shown, setShown] = useState("register");
+  const [activeStep, setActiveStep] = useState(1);
   const [anims, setAnims] = useState({
     register: "",
     login: ""
@@ -58,19 +53,19 @@ const AuthContainer = React.memo(props => {
 
   return (
     <>
-      <div className={`locateSibling ${anims[shown]}`}>
+      <div className={anims[shown]}>
         {shown === "login" && (
-          <WrapLogin changeShown={changeShown} openAlert={props.openAlert} />
+          <Suspense fallback={<Skeleton />}>
+            <Login changeShown={changeShown} openAlert={props.openAlert} />
+          </Suspense>
         )}
         {shown === "register" && (
-          <Suspense fallback={<Skeleton />}>
-            <WrapRegister
-              openAlert={props.openAlert}
-              displayOtherForm={displayOtherForm}
-              setActiveStep={setActiveStep}
-              changeShown={changeShown}
-            />
-          </Suspense>
+          <Register
+            openAlert={props.openAlert}
+            displayOtherForm={displayOtherForm}
+            setActiveStep={setActiveStep}
+            changeShown={changeShown}
+          />
         )}
       </div>
       <Steps navigateAuth={navigateAuth} activeStep={activeStep} />

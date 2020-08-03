@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import AuthNavbar from "../components/AuthNavbar";
+import Navbar from "../components/Navbar";
 import Form from "../components/Form";
 import { mainAxios } from "../axios/config";
-import withInput from "../withInput";
-const WrapForm = withInput(Form);
 
 const Main = props => {
   const [data, setData] = useState({});
@@ -17,8 +15,8 @@ const Main = props => {
   }, []);
   return (
     <>
-      <AuthNavbar />
-      <WrapForm userData={data} openAlert={props.openAlert} />
+      <Navbar />
+      <Form userData={data} openAlert={props.openAlert} />
     </>
   );
 };

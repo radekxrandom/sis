@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:wght@100;200;300;400;500;600;700a|Source+Sans+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat|Roboto&amp;subset=latin-ext");
+
 .MuiAppBar-colorPrimary {
   background: #6578e0 !important;
   color: #FAFAFA !important;
@@ -35,7 +38,10 @@
   margin-left: 32.25%;
   margin-right: 32.25%;
   margin-top: 3%;
-  font-family: "Raleway";
+}
+
+.navbar {
+  color: #fafafa;
 }
 
 .MuiContainer-root {
@@ -75,6 +81,10 @@
 .steps {
   width: 100% !important;
   margin: auto;
+  transform: translate(-50%, 0%);
+  left: 50%;
+  bottom: 0;
+  position: fixed;
 }
 
 /* ----------------------------------------------
@@ -256,17 +266,8 @@
 #root {
   overflow: hidden;
   height: 100vh !important;
-}
-
-.locateSibling+div {
-  transform: translate(-50%);
-  left: 50%;
-  bottom: 0;
-  position: fixed;
-}
-
-.locateSibling {
-  min-height: 40rem;
+  color: #484f54;
+  font-family: "Montserrat";
 }
 
 @media screen and (max-device-width: 1250px) {
@@ -389,4 +390,16 @@
 .shake-horizontal {
   -webkit-animation: shake-horizontal 0.3s ease-in both;
   animation: shake-horizontal 0.3s ease-in both;
+}
+
+.MuiTypography-h6 {
+  font-size: calc(20px + (32 - 20) * (100vw - 400px) / (1900 - 400)) !important;
+}
+
+.MuiButton-root {
+  font-size: calc(12px + (14 - 12) * (100vw - 400px) / (1900 - 400)) !important;
+}
+
+.contInfo {
+  font-size: calc(14px + (20 - 14) * (100vw - 400px) / (1900 - 400)) !important;
 }
