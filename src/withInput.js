@@ -42,8 +42,8 @@ const withInput = Wrapped => {
       });
     };
 
-    const submit = async (type, url, data) => {
-      const post = await mainAxios[type](url, data);
+    const submit = (type, url, data) => {
+      const post = mainAxios[type](url, data);
       console.log(post);
       return post;
     };

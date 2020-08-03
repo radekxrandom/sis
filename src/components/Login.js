@@ -87,6 +87,7 @@ const Login = props => {
             <Button
               type="submit"
               fullWidth
+              disabled={checker(props.state, fieldNames)}
               className={`submitBtn`}
               variant="contained"
               color="primary"

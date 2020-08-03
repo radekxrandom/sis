@@ -23,30 +23,11 @@ const useStyles = makeStyles(theme => ({
 const AuthNavbar = props => {
   const classes = useStyles();
   const [auth, setAuth] = useContext(AppContext);
-  const logout = async () => {
-    //const post = await mainAxios.post("/auth/logout");
-    fetch("https://recruit.sciencein.software/auth/logout", {
-      headers: {
-        accept: "application/json, text/plain, */*",
-        "accept-language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
-        authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYW5kb21pcyIsImV4cCI6MTU5NjQwOTE1OSwicm9sZXMiOlsiVVNFUiJdLCJsb2dpbiI6InJhbmRvbUBwaWVzLmNvbSJ9.Z6regaR6SN24lCxgPDyZ6cKrPt39UOH6ajKkIcfEE5Y",
-        "cache-control": "no-cache",
-        pragma: "no-cache",
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "cross-site"
-      },
-      referrer: "http://localhost:3000/",
-      referrerPolicy: "no-referrer-when-downgrade",
-      body: null,
-      method: "POST",
-      mode: "cors",
-      credentials: "include"
-    }).then(post => {
+  const logout = () => {
+    mainAxios.post("api/v1/auth/logout").then(pos => {
       localStorage.clear();
       setAuth("auth");
-      console.log(post);
+      console.log(pos);
     });
   };
   return (

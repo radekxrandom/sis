@@ -8,7 +8,7 @@ export const setToken = token => {
   if (token) {
     const auth = `Bearer ${token}`;
     // Apply authorization token to every request if logged in
-    mainAxios.defaults.headers.common.Authorization = auth;
+    mainAxios.defaults.headers.common["Authorization"] = auth;
   } else {
     // Delete auth header
     delete mainAxios.defaults.headers.common.Authorization;

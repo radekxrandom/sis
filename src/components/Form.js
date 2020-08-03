@@ -19,7 +19,7 @@ const Form = props => {
     };
     const pach = await props.submit(
       "put",
-      "https://recruit.sciencein.software/user/basicinfo?lang=pl",
+      "api/v1/user/basicinfo?lang=pl",
       form
     );
     console.log(pach);

@@ -21,23 +21,6 @@ const checker = (state, fieldNames) => {
 };
 
 const Register = React.memo(props => {
-  const hasErr = () => {
-    const { err } = props.state;
-    const { login, email, regPassword, confirmPassword } = err;
-    if (login || email || regPassword || confirmPassword) {
-      return true;
-    }
-    return false;
-  };
-
-  const isEmpty = () => {
-    const { login, regPassword, email, confirmPassword } = props.state;
-    if (!login || !email || !regPassword || !confirmPassword) {
-      return true;
-    }
-    return false;
-  };
-
   const handleSubmit = async e => {
     e.preventDefault();
     if (checker(props.state, fieldNames)) {
@@ -104,7 +87,7 @@ const Register = React.memo(props => {
             <Button
               type="submit"
               fullWidth
-              disabled={hasErr()}
+              disabled={checker(props.state, fieldNames)}
               variant="contained"
               color="primary"
               className="submitBtn"
