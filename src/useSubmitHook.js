@@ -16,7 +16,7 @@ export default function useSubmitHook(openAlert) {
       return post;
     } catch (err) {
       if (err.response) {
-        displayErrAlert(err.response.data[0].message.text);
+        displayErrAlert(err.response.data[0]?.message?.text);
       } else {
         displayErrAlert("Nieokreślony problem");
       }
