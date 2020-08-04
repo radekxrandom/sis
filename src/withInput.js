@@ -1,3 +1,4 @@
+//legacy
 import React, { useState } from "react";
 import { mainAxios } from "./axios/config";
 import Validator from "./Validator";
@@ -47,7 +48,7 @@ const withInput = Wrapped => {
       },
       [state]
     );
-
+    //useCallback
     const submit = React.useCallback((type, url, data) => {
       const post = mainAxios[type](url, data);
       console.log(post);

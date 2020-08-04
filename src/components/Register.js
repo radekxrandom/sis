@@ -11,18 +11,8 @@ import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import Tooltip from "@material-ui/core/Tooltip";
 import TextInput from "../blocks/TextInput";
-import { useFormFields } from "../formHook";
-import { withStyles } from "@material-ui/core/styles";
-import { useSubmitHook } from "../useSubmitHook";
-
-const LightTooltip = withStyles(theme => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[1],
-    fontSize: 11
-  }
-}))(Tooltip);
+import useFormFields from "../formHook";
+import useSubmitHook from "../useSubmitHook";
 
 const fieldNames = [
   "login",
@@ -52,7 +42,7 @@ const Register = props => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (containsErrors(state, fieldNames)) {
-      //btn disabled albeit one could still try to submit
+      //btn disabled albeit one could still try submiting
       //invalid form by pressing enter
       displayErrAlert("Popraw błędy");
       return false;
@@ -63,7 +53,7 @@ const Register = props => {
       password: regPassword,
       email
     };
-    const post = await submit("api/v1/registration/user", form);
+    const post = await submit("post", "api/v1/registration/user", form);
     if (post) {
       props.openAlert("Rejestracja pomyślna", "success");
       props.displayOtherForm("login", "register");

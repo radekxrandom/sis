@@ -11,8 +11,8 @@ import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import AppContext from "../AppContext";
 import TextInput from "../blocks/TextInput";
-import { useFormFields } from "../formHook";
-import { useSubmitHook } from "../useSubmitHook";
+import useFormFields from "../formHook";
+import useSubmitHook from "../useSubmitHook";
 import { setToken } from "../axios/config";
 
 const fieldNames = ["login", "password"];
@@ -31,7 +31,7 @@ const Login = props => {
   const [state, handleInput] = useFormFields({
     login: "",
     password: "",
-    saveLogin: "",
+    saveLogin: true,
     err: {}
   });
   const handleSubmit = async e => {
@@ -47,12 +47,12 @@ const Login = props => {
       login,
       password
     };
-    const post = await submit("api/v1/auth/login", form);
+    const post = await submit("post", "api/v1/auth/login", form);
     if (post) {
       saveLogin && localStorage.setItem("authToken", post.data.accessToken);
       props.openAlert("Zalogowano", "success");
       setToken(post.data.accessToken);
-      setAuth("main");
+      setAuth("authUser");
     }
   };
   return (
@@ -88,6 +88,7 @@ const Login = props => {
                   onChange={handleInput}
                   value="saveLogin"
                   color="primary"
+                  defaultChecked
                 />
               }
               label="Zapamiętaj logowanie"

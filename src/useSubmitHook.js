@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { mainAxios } from "./axios/config";
 
-export function useSubmitHook(openAlert) {
+export default function useSubmitHook(openAlert) {
   const [animation, setAnimation] = useState("");
 
   const displayErrAlert = text => {
@@ -10,9 +10,9 @@ export function useSubmitHook(openAlert) {
     setTimeout(() => setAnimation(""), 300);
   };
 
-  const submit = async (url, form) => {
+  const submit = async (method, url, form) => {
     try {
-      const post = await mainAxios.post(url, form);
+      const post = await mainAxios[method](url, form);
       return post;
     } catch (err) {
       if (err.response) {

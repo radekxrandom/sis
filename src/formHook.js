@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Validator from "./Validator";
 
-export function useFormFields(initialState) {
+export default function useFormFields(initialState) {
   const [state, setState] = useState(initialState);
 
   return [
