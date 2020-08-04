@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,8 +12,8 @@ import Link from "@material-ui/core/Link";
 import AppContext from "../AppContext";
 import TextInput from "../blocks/TextInput";
 import { useFormFields } from "../formHook";
+import { useSubmitHook } from "../useSubmitHook";
 import { setToken } from "../axios/config";
-import { mainAxios } from "../axios/config";
 
 const fieldNames = ["login", "password"];
 
@@ -26,7 +26,8 @@ const containsErrors = (state, fieldNames) => {
 
 const Login = props => {
   const [auth, setAuth] = useContext(AppContext);
-  const [animation, setAnimation] = useState("");
+  //const [animation, setAnimation] = useState("");
+  const [animation, submit, displayErrAlert] = useSubmitHook(props.openAlert);
   const [state, handleInput] = useFormFields({
     login: "",
     password: "",
@@ -36,9 +37,9 @@ const Login = props => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (containsErrors(state, fieldNames)) {
-      props.openAlert("Popraw błędy", "info");
-      setAnimation("shake-horizontal");
-      setTimeout(() => setAnimation(""), 300);
+      //btn disabled albeit one could still try to submit
+      //invalid form by pressing enter
+      displayErrAlert("Popraw błędy");
       return false;
     }
     const { login, password, saveLogin } = state;
@@ -46,17 +47,12 @@ const Login = props => {
       login,
       password
     };
-    try {
-      const post = await mainAxios.post("api/v1/auth/login", form);
-      //keep jwt token if user checked remember me box
+    const post = await submit("api/v1/auth/login", form);
+    if (post) {
       saveLogin && localStorage.setItem("authToken", post.data.accessToken);
       props.openAlert("Zalogowano", "success");
       setToken(post.data.accessToken);
       setAuth("main");
-    } catch (err) {
-      props.openAlert("Problem", "info");
-      setAnimation("shake-horizontal");
-      setTimeout(() => setAnimation(""), 300);
     }
   };
   return (
@@ -99,8 +95,13 @@ const Login = props => {
             <Button
               type="submit"
               fullWidth
+              //pass the return value of function
+              //not the function itself
+              //although i am still not sure if
+              /*{()=> {containsErrors(state, fieldNames)}}*/
+              //isnt be correct way
               disabled={containsErrors(state, fieldNames)}
-              className={`submitBtn`}
+              className="submitBtn"
               variant="contained"
               color="primary"
             >

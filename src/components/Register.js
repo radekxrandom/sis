@@ -11,9 +11,9 @@ import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import Tooltip from "@material-ui/core/Tooltip";
 import TextInput from "../blocks/TextInput";
-import { mainAxios } from "../axios/config";
 import { useFormFields } from "../formHook";
 import { withStyles } from "@material-ui/core/styles";
+import { useSubmitHook } from "../useSubmitHook";
 
 const LightTooltip = withStyles(theme => ({
   tooltip: {
@@ -40,7 +40,7 @@ const containsErrors = (state, fieldNames) => {
 };
 
 const Register = props => {
-  const [animation, setAnimation] = React.useState("");
+  const [animation, submit, displayErrAlert] = useSubmitHook(props.openAlert);
   const [state, handleInput] = useFormFields({
     login: "",
     email: "",
@@ -54,9 +54,7 @@ const Register = props => {
     if (containsErrors(state, fieldNames)) {
       //btn disabled albeit one could still try to submit
       //invalid form by pressing enter
-      props.openAlert("Popraw błędy", "info");
-      setAnimation("shake-horizontal");
-      setTimeout(() => setAnimation(""), 300);
+      displayErrAlert("Popraw błędy");
       return false;
     }
     const { login, regPassword, email } = state;
@@ -65,19 +63,11 @@ const Register = props => {
       password: regPassword,
       email
     };
-    try {
-      const post = await mainAxios.post("api/v1/registration/user", form);
+    const post = await submit("api/v1/registration/user", form);
+    if (post) {
       props.openAlert("Rejestracja pomyślna", "success");
       props.displayOtherForm("login", "register");
       props.setActiveStep(2);
-    } catch (err) {
-      if (err.response) {
-        props.openAlert(err.response.data[0].message.text, "info");
-      } else {
-        props.openAlert("Nieokreślony problem", "info");
-      }
-      setAnimation("shake-horizontal");
-      setTimeout(() => setAnimation(""), 300);
     }
   };
   return (
@@ -142,6 +132,9 @@ const Register = props => {
               fullWidth
               //pass the return value of function
               //not the function itself
+              //although i am still not sure if
+              /*{()=> {containsErrors(state, fieldNames)}}*/
+              //isnt be correct way
               disabled={containsErrors(state, fieldNames)}
               variant="contained"
               color="primary"
