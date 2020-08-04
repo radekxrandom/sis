@@ -9,13 +9,30 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
+import Tooltip from "@material-ui/core/Tooltip";
 import TextInput from "../blocks/TextInput";
 import { mainAxios } from "../axios/config";
 import { useFormFields } from "../formHook";
+import { withStyles } from "@material-ui/core/styles";
 
-const fieldNames = ["login", "email", "regPassword", "confirmPassword"];
+const LightTooltip = withStyles(theme => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: 11
+  }
+}))(Tooltip);
 
-const checker = (state, fieldNames) => {
+const fieldNames = [
+  "login",
+  "email",
+  "regPassword",
+  "confirmPassword",
+  "policyCheckbox"
+];
+
+const containsErrors = (state, fieldNames) => {
   const err = fieldNames.map(el =>
     !state[el] || state.err[el] ? true : false
   );
@@ -23,18 +40,23 @@ const checker = (state, fieldNames) => {
 };
 
 const Register = props => {
-  const [shake, setShake] = React.useState("");
+  const [animation, setAnimation] = React.useState("");
   const [state, handleInput] = useFormFields({
     login: "",
     email: "",
     regPassword: "",
     confirmPassword: "",
+    policyCheckbox: "",
     err: {}
   });
   const handleSubmit = async e => {
     e.preventDefault();
-    if (checker(state, fieldNames)) {
+    if (containsErrors(state, fieldNames)) {
+      //btn disabled albeit one could still try to submit
+      //invalid form by pressing enter
       props.openAlert("Popraw błędy", "info");
+      setAnimation("shake-horizontal");
+      setTimeout(() => setAnimation(""), 300);
       return false;
     }
     const { login, regPassword, email } = state;
@@ -49,14 +71,18 @@ const Register = props => {
       props.displayOtherForm("login", "register");
       props.setActiveStep(2);
     } catch (err) {
-      props.openAlert("Problem", "info");
-      setShake("shake-horizontal");
-      setTimeout(() => setShake(""), 300);
+      if (err.response) {
+        props.openAlert(err.response.data[0].message.text, "info");
+      } else {
+        props.openAlert("Nieokreślony problem", "info");
+      }
+      setAnimation("shake-horizontal");
+      setTimeout(() => setAnimation(""), 300);
     }
   };
   return (
     <>
-      <Container component="main" maxWidth="xs" className={`${shake}`}>
+      <Container component="main" maxWidth="xs" className={`${animation}`}>
         <CssBaseline />
         <div className="flexColumnCenter">
           <Avatar>
@@ -92,14 +118,31 @@ const Register = props => {
               type="password"
               err={state.err.confirmPassword}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Zaakceptuj regulamin"
-            />
+            <Tooltip
+              arrow
+              placement="top-end"
+              disableFocusListener
+              title="Tak naprawde to nie ma żadnego regulaminu"
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    required
+                    onChange={handleInput}
+                    name="policyCheckbox"
+                    value="policyCheckbox"
+                    color="primary"
+                  />
+                }
+                label="Akceptuję regulamin *"
+              />
+            </Tooltip>
             <Button
               type="submit"
               fullWidth
-              disabled={checker(state, fieldNames)}
+              //pass the return value of function
+              //not the function itself
+              disabled={containsErrors(state, fieldNames)}
               variant="contained"
               color="primary"
               className="submitBtn"

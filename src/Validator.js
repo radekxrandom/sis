@@ -73,6 +73,9 @@ class Validator {
   saveLogin() {
     return this.errors;
   }
+  policyCheckbox() {
+    return this.errors;
+  }
 }
 
 export default Validator;
