@@ -3,13 +3,13 @@
 
 .MuiAppBar-colorPrimary {
   background: #6578e0 !important;
-  color: #FAFAFA !important;
+  color: #fafafa !important;
 }
 
 .bts {
-  color: #FAFAFA !important;
+  color: #fafafa !important;
   margin-right: 0.25rem !important;
-  border: solid 1px #FAFAFA !important;
+  border: solid 1px #fafafa !important;
 }
 
 .bts:hover {
@@ -127,8 +127,8 @@
 }
 
 .slide-out-login {
-  -webkit-animation: slide-out-login .25s ease-in-out both;
-  animation: slide-out-login .25s ease-in-out both;
+  -webkit-animation: slide-out-login 0.25s ease-in-out both;
+  animation: slide-out-login 0.25s ease-in-out both;
 }
 
 /* ----------------------------------------------
@@ -171,8 +171,8 @@
 }
 
 .slide-out-register {
-  -webkit-animation: slide-out-register .25s ease-in-out both;
-  animation: slide-out-register .25s ease-in-out both;
+  -webkit-animation: slide-out-register 0.25s ease-in-out both;
+  animation: slide-out-register 0.25s ease-in-out both;
 }
 
 /* ----------------------------------------------
@@ -215,8 +215,8 @@
 }
 
 .slide-in-register {
-  -webkit-animation: slide-in-register .25s ease-in-out both;
-  animation: slide-in-register .25s ease-in-out both;
+  -webkit-animation: slide-in-register 0.25s ease-in-out both;
+  animation: slide-in-register 0.25s ease-in-out both;
 }
 
 /* ----------------------------------------------
@@ -259,8 +259,8 @@
 }
 
 .slide-in-login {
-  -webkit-animation: slide-in-login .25s ease-in-out both;
-  animation: slide-in-login .25s ease-in-out both;
+  -webkit-animation: slide-in-login 0.25s ease-in-out both;
+  animation: slide-in-login 0.25s ease-in-out both;
 }
 
 #root {
@@ -273,6 +273,19 @@
 @media screen and (max-device-width: 1250px) {
   .MuiContainer-root {
     margin-top: 2rem;
+  }
+
+  .steps {
+    width: 100% !important;
+    margin: auto;
+    transform: translate(-50%, 0%);
+    left: 50%;
+    top: 100%;
+    position: absolute;
+  }
+
+  #root {
+    height: 110vh !important;
   }
 
   .article {
@@ -291,7 +304,8 @@
     margin-right: 12.5%;
   }
 
-  .formFieldLeft, .formFieldRight {
+  .formFieldLeft,
+  .formFieldRight {
     width: 100% !important;
     margin: 0 auto 0.5rem !important;
   }
@@ -431,7 +445,7 @@ loader,
 
 .loader:before,
 .loader:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
 }
