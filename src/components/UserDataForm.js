@@ -109,6 +109,7 @@ const UserDataForm = props => {
                 >
                   <InputLabel id="Płeć">Plec</InputLabel>
                   <Select
+                    inputProps={{ "aria-label": "Płeć" }}
                     labelId="Płeć"
                     id="demo-simple-select-outlined"
                     onChange={handleInput}
@@ -118,8 +119,12 @@ const UserDataForm = props => {
                     helperText={err?.gender || ""}
                     value={data.gender}
                   >
-                    <MenuItem value={`FEMALE`}>Kobieta</MenuItem>
-                    <MenuItem value={`MALE`}>Mezczyzna</MenuItem>
+                    <MenuItem ariaLabel="Mezczyzna" value={`FEMALE`}>
+                      Kobieta
+                    </MenuItem>
+                    <MenuItem ariaLabel="Mezczyzna" value={`MALE`}>
+                      Mezczyzna
+                    </MenuItem>
                   </Select>
                 </FormControl>
                 <TextField

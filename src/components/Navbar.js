@@ -23,7 +23,7 @@ const Navbar = props => {
             The greatest website
           </Typography>
           <Button className="bts" variant="outlined" onClick={logout}>
-            Sign out
+            Wyloguj
           </Button>
         </Toolbar>
       </AppBar>

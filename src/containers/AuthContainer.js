@@ -12,29 +12,46 @@ const sleep = waitTimeInMs =>
 const AuthContainer = React.memo(props => {
   const [shown, setShown] = useState("register");
   const [activeStep, setActiveStep] = useState(1);
-  const [anims, setAnims] = useState({
-    register: "",
-    login: ""
-  });
+  const [anims, setAnims] = useState("");
 
   const displayOtherForm = React.useCallback(
     (destination, origin) => {
       if (shown === destination) {
         return false;
       }
-      setAnims({
-        [origin]: `slide-out-${origin}`
-      });
-      sleep(230).then(() => {
-        setAnims({
-          [origin]: "",
-          [destination]: `slide-in-${destination}`
-        });
+      setAnims(`slide-out-${origin}`);
+      sleep(250).then(() => {
+        setAnims(`slide-in-${destination}`);
         setShown(destination);
       });
     },
     [shown]
   );
+
+  React.useEffect(() => {
+    const keyboardNav = e => {
+      if (
+        e.target.tagName === "INPUT" ||
+        (e.keyCode !== 37 && e.keyCode !== 39)
+      ) {
+        return;
+      }
+      if (e.keyCode === 37) {
+        displayOtherForm("register", "login");
+        return;
+      }
+      if (e.keyCode === 39) {
+        displayOtherForm("login", "register");
+        return;
+      }
+    };
+    window.addEventListener("keydown", keyboardNav);
+
+    return () => {
+      window.removeEventListener("keydown", keyboardNav);
+    };
+  }, [displayOtherForm]);
+
   const navigateAuth = e => {
     if (e === 0) {
       displayOtherForm("register", "login");
@@ -53,7 +70,7 @@ const AuthContainer = React.memo(props => {
 
   return (
     <>
-      <div className={anims[shown]}>
+      <div className={anims}>
         {shown === "login" && (
           <Suspense fallback={<Skeleton />}>
             <Login changeShown={changeShown} openAlert={props.openAlert} />
