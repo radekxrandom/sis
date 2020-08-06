@@ -3,6 +3,8 @@ import React, { useState, Suspense } from "react";
 import Register from "../components/Register";
 import Steps from "../components/Steps";
 import Skeleton from "@material-ui/lab/Skeleton";
+import useAuthNav from "../useAuthNav";
+import { AuthContextProvider } from "./AuthContext";
 
 const Login = React.lazy(() => import("../components/Login"));
 
@@ -10,15 +12,18 @@ const sleep = waitTimeInMs =>
   new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 const AuthContainer = React.memo(props => {
+  /*
   const [shown, setShown] = useState("register");
   const [activeStep, setActiveStep] = useState(1);
   const [anims, setAnims] = useState("");
 
   const displayOtherForm = React.useCallback(
-    (destination, origin) => {
+    options => {
+      const [destination, origin, step] = options;
       if (shown === destination) {
         return false;
       }
+      setActiveStep(step);
       setAnims(`slide-out-${origin}`);
       sleep(250).then(() => {
         setAnims(`slide-in-${destination}`);
@@ -27,7 +32,21 @@ const AuthContainer = React.memo(props => {
     },
     [shown]
   );
+  const navigateAuth = index => {
+    const options = [
+      ["register", "login", 1],
+      ["login", "register", 2]
+    ];
+    //its better practice to use dataset instead of inline
+    //functions in jsx, but it wasn't posbie in every place
+    //where this function is used
+    const navIndex = index.target?.dataset.location || index;
+    displayOtherForm(options[navIndex]);
+  };
+*/
 
+  const [shown, anims, , navigateAuth] = useAuthNav();
+  //const [state, setState] = React.useContext(AuthContext);
   React.useEffect(() => {
     const keyboardNav = e => {
       if (
@@ -37,11 +56,11 @@ const AuthContainer = React.memo(props => {
         return;
       }
       if (e.keyCode === 37) {
-        displayOtherForm("register", "login");
+        navigateAuth(0);
         return;
       }
       if (e.keyCode === 39) {
-        displayOtherForm("login", "register");
+        navigateAuth(1);
         return;
       }
     };
@@ -50,42 +69,19 @@ const AuthContainer = React.memo(props => {
     return () => {
       window.removeEventListener("keydown", keyboardNav);
     };
-  }, [displayOtherForm]);
-
-  const navigateAuth = e => {
-    if (e === 0) {
-      displayOtherForm("register", "login");
-    } else {
-      displayOtherForm("login", "register");
-    }
-    setActiveStep(e + 1);
-  };
-  const changeShown = e => {
-    const navenum = {
-      login: 1,
-      register: 0
-    };
-    navigateAuth(navenum[e.target.dataset.location]);
-  };
+  }, [navigateAuth]);
 
   return (
     <>
       <div className={anims}>
         {shown === "login" && (
           <Suspense fallback={<Skeleton />}>
-            <Login changeShown={changeShown} openAlert={props.openAlert} />
+            <Login openAlert={props.openAlert} />
           </Suspense>
         )}
-        {shown === "register" && (
-          <Register
-            openAlert={props.openAlert}
-            displayOtherForm={displayOtherForm}
-            setActiveStep={setActiveStep}
-            changeShown={changeShown}
-          />
-        )}
+        {shown === "register" && <Register openAlert={props.openAlert} />}
       </div>
-      <Steps navigateAuth={navigateAuth} activeStep={activeStep} />
+      <Steps />
     </>
   );
 });

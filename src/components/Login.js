@@ -14,6 +14,7 @@ import TextInput from "../blocks/TextInput";
 import useFormFields from "../formHook";
 import useSubmitHook from "../useSubmitHook";
 import { setToken } from "../axios/config";
+import useAuthNav from "../useAuthNav";
 
 const fieldNames = ["login", "password"];
 
@@ -34,6 +35,7 @@ const Login = props => {
     saveLogin: true,
     err: {}
   });
+  const [, , , navigateAuth] = useAuthNav();
   const handleSubmit = async e => {
     e.preventDefault();
     if (containsErrors(state, fieldNames)) {
@@ -110,11 +112,7 @@ const Login = props => {
             </Button>
             <Grid container className="submitBtn">
               <Grid item xs>
-                <Link
-                  variant="body2"
-                  data-location="register"
-                  onClick={props.changeShown}
-                >
+                <Link variant="body2" data-location={0} onClick={navigateAuth}>
                   Nie masz jeszcze konta? Zarejestruj się.
                 </Link>
               </Grid>

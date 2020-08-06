@@ -1,7 +1,10 @@
 import axios from "axios";
 
 export const mainAxios = axios.create({
-  baseURL: "https://recruit.sciencein.software/"
+  baseURL: "https://recruit.sciencein.software/",
+  httpProxyOptions: {
+    secure: false
+  }
 });
 
 export const setToken = token => {

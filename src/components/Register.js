@@ -13,6 +13,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import TextInput from "../blocks/TextInput";
 import useFormFields from "../formHook";
 import useSubmitHook from "../useSubmitHook";
+import useAuthNav from "../useAuthNav";
 
 const fieldNames = [
   "login",
@@ -30,6 +31,7 @@ const containsErrors = (state, fieldNames) => {
 };
 
 const Register = props => {
+  const [, , , navigateAuth] = useAuthNav();
   const [animation, submit, displayErrAlert] = useSubmitHook(props.openAlert);
   const [state, handleInput] = useFormFields({
     login: "",
@@ -56,8 +58,7 @@ const Register = props => {
     const post = await submit("post", "api/v1/registration/user", form);
     if (post) {
       props.openAlert("Rejestracja pomyślna", "success");
-      props.displayOtherForm("login", "register");
-      props.setActiveStep(2);
+      navigateAuth(1);
     }
   };
   return (
@@ -134,11 +135,7 @@ const Register = props => {
             </Button>
             <Grid container className="submitBtn">
               <Grid item xs>
-                <Link
-                  variant="body2"
-                  data-location="login"
-                  onClick={props.changeShown}
-                >
+                <Link variant="body2" data-location={1} onClick={navigateAuth}>
                   Masz już konto? Kliknij tu by przejść na strone logowania.
                 </Link>
               </Grid>
