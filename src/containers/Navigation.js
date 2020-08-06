@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import Main from "./Main";
 import AppContext from "../AppContext";
-import AuthWrap from "./AuthWrap";
 import AuthContainer from "./AuthContainer";
+import { AuthContextProvider } from "./AuthContext";
 
 const Navigation = React.memo(props => {
   const [auth, setAuth] = useContext(AppContext);
@@ -10,7 +10,11 @@ const Navigation = React.memo(props => {
   if (auth === "authUser") {
     return <Main openAlert={props.openAlert} />;
   } else {
-    return <AuthWrap openAlert={props.openAlert} />;
+    return (
+      <AuthContextProvider>
+        <AuthContainer openAlert={props.openAlert} />
+      </AuthContextProvider>
+    );
   }
 });
 
