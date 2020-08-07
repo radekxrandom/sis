@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { mainAxios } from "./axios/config";
+import { mainAxios } from "../axios/config";
 
 export default function useUserData(err, setErr) {
   const [loading, setLoading] = useState(true);

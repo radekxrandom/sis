@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import AppContext from "./AppContext";
+import AppContext from "./contexts/AppContext";
 import Navigation from "./containers/Navigation";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";

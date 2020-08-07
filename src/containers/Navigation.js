@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import Main from "./Main";
-import AppContext from "../AppContext";
+import AppContext from "../contexts/AppContext";
 import AuthContainer from "./AuthContainer";
-import { AuthContextProvider } from "./AuthContext";
+import { AuthContextProvider } from "../contexts/AuthContext";
 
 const Navigation = React.memo(props => {
-  const [auth, setAuth] = useContext(AppContext);
+  const [auth] = useContext(AppContext);
 
   if (auth === "authUser") {
     return <Main openAlert={props.openAlert} />;

@@ -1,15 +1,15 @@
-import React, { useState, Suspense } from "react";
+import React, { Suspense } from "react";
 //import Login from "../components/Login";
 import Register from "../components/Register";
 import Steps from "../components/Steps";
 import Skeleton from "@material-ui/lab/Skeleton";
-import useAuthNav from "../useAuthNav";
+import useAuthNav from "../customHooks/useAuthNav";
 
 const Login = React.lazy(() => import("../components/Login"));
 
 const AuthContainer = React.memo(props => {
-  const [shown, anims, , navigateAuth] = useAuthNav();
-
+  //const [shown, anims, , navigateAuth] = useAuthNav();
+  const { 0: shown, 1: anims, 3: navigateAuth } = useAuthNav();
   React.useEffect(() => {
     const keyboardNav = e => {
       if (

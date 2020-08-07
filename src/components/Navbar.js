@@ -3,11 +3,12 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import AppContext from "../AppContext";
+import AppContext from "../contexts/AppContext";
 import { mainAxios } from "../axios/config";
 
 const Navbar = props => {
-  const [auth, setAuth] = useContext(AppContext);
+  //const [auth, setAuth] = useContext(AppContext);
+  const { 1: setAuth } = useContext(AppContext);
   const logout = () => {
     mainAxios.post("api/v1/auth/logout").then(pos => {
       localStorage.clear();

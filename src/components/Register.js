@@ -11,9 +11,9 @@ import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import Tooltip from "@material-ui/core/Tooltip";
 import TextInput from "../blocks/TextInput";
-import useFormFields from "../formHook";
-import useSubmitHook from "../useSubmitHook";
-import useAuthNav from "../useAuthNav";
+import useFormFields from "../customHooks/formHook";
+import useSubmitHook from "../customHooks/useSubmitHook";
+import useAuthNav from "../customHooks/useAuthNav";
 
 const fieldNames = [
   "login",
@@ -31,7 +31,8 @@ const containsErrors = (state, fieldNames) => {
 };
 
 const Register = props => {
-  const [, , , navigateAuth] = useAuthNav();
+  const { 3: navigateAuth } = useAuthNav();
+  //const [, , , navigateAuth] = useAuthNav();
   const [animation, submit, displayErrAlert] = useSubmitHook(props.openAlert);
   const [state, handleInput] = useFormFields({
     login: "",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { mainAxios } from "./axios/config";
+import { mainAxios } from "../axios/config";
 
 export default function useSubmitHook(openAlert) {
   const [animation, setAnimation] = useState("");

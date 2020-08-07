@@ -9,12 +9,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
-import AppContext from "../AppContext";
+import AppContext from "../contexts/AppContext";
 import TextInput from "../blocks/TextInput";
-import useFormFields from "../formHook";
-import useSubmitHook from "../useSubmitHook";
+import useFormFields from "../customHooks/formHook";
+import useSubmitHook from "../customHooks/useSubmitHook";
 import { setToken } from "../axios/config";
-import useAuthNav from "../useAuthNav";
+import useAuthNav from "../customHooks/useAuthNav";
 
 const fieldNames = ["login", "password"];
 
@@ -26,7 +26,8 @@ const containsErrors = (state, fieldNames) => {
 };
 
 const Login = props => {
-  const [auth, setAuth] = useContext(AppContext);
+  //const [auth, setAuth] = useContext(AppContext);
+  const { 1: setAuth } = useContext(AppContext);
   //const [animation, setAnimation] = useState("");
   const [animation, submit, displayErrAlert] = useSubmitHook(props.openAlert);
   const [state, handleInput] = useFormFields({
@@ -35,7 +36,8 @@ const Login = props => {
     saveLogin: true,
     err: {}
   });
-  const [, , , navigateAuth] = useAuthNav();
+  //const [, , , navigateAuth] = useAuthNav();
+  const { 3: navigateAuth } = useAuthNav();
   const handleSubmit = async e => {
     e.preventDefault();
     if (containsErrors(state, fieldNames)) {
